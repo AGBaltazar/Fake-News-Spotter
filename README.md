@@ -22,7 +22,7 @@ DOM Updates
 # Tech Stack
 ## Backend (Python)
 
-  -Flask (API Server)
+  -FastAPI (API Server)
   
   -BeautifulSoup (Scraping Articles)
   
@@ -34,3 +34,8 @@ DOM Updates
   -Bootstrap
   
   -JavaScript
+
+
+# References
+    **FastAIP** [text](https://fastapi.tiangolo.com/)
+    **Article Sraper/ Newspaper3K** [text](https://newspaper.readthedocs.io/en/latest/)
