@@ -24,7 +24,7 @@ DOM Updates
 
   -FastAPI (API Server)
   
-  -BeautifulSoup (Scraping Articles)
+  -Newspaper3K (Scraping Articles)
   
   -AI Model
 

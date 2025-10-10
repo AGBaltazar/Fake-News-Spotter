@@ -1,7 +1,7 @@
 from typing import Optional
-
+from pydantic import BaseModel
 from fastapi import FastAPI
-from scraper import article, author, text
+from analyzer import analyze
 
 app = FastAPI()
 
@@ -10,16 +10,16 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-## Once called, analyze will take information from the python modules and send it in JSON 
-@app.get("/app/analyze")
-def read_item(text: str, q: Optional[str] = None):
+class Url(BaseModel):
+    url: str
 
-    summary = f"Summary of: {text}"
-    credibility_score = 75  # example
-    explanation = f"Analysis of '{text}' with optional param q={q}"
+class Output(BaseModel):
+    summary: str
+    credibility_score: int
+    explanation: str
 
-    return {
-        "summary": summary,
-        "credibility_score": credibility_score,
-        "explanation": explanation
-    }
+## Once called, analyze will send the url to the backend scraper to analyze
+@app.post("/app/analyze")
+def get_item(url: str, q: Optional[str] = None):
+
+    analyze(url)

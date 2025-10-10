@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>News Analyzer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div class="container py-5">
+    <h1 class="text-center mb-4">📰  News Analyzer</h1>
+    <div class="card shadow-sm p-4 mb-4">
+      <form id="analyze-form">
+        <div class="mb-3">
+          <label for="urlInput" class="form-label">Enter Article URL</label>
+          <input type="text" class="form-control" id="urlInput" placeholder="Paste a news article URL">
+        </div>
+        <div class="mb-3">
+          <label for="textInput" class="form-label">Or Paste Text</label>
+          <textarea class="form-control" id="textInput" rows="4" placeholder="Paste article text here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Analyze</button>
+      </form>
+    </div>
+
+    <div id="results" class="card shadow-sm p-4" style="display:none;">
+      <h3 class="mb-3">Analysis Results</h3>
+      <p><strong>Title:</strong> <span id="title"></span></p>
+      <p><strong>Authors:</strong> <span id="authors"></span></p>
+      <p><strong>Date:</strong> <span id="date"></span></p>
+      <p><strong>Summary:</strong> <span id="summary"></span></p>
+      <p><strong>Credibility Score:</strong> <span id="score"></span></p>
+      <p><strong>Explanation:</strong> <span id="explanation"></span></p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("analyze-form");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const url = document.getElementById("urlInput").value;
+      const text = document.getElementById("textInput").value;
+
+      const response = await fetch("/app/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url, text })
+      });
+
+      const data = await response.json();
+
+      document.getElementById("results").style.display = "block";
+      document.getElementById("title").textContent = data.title || "N/A";
+      document.getElementById("authors").textContent = data.authors || "Unknown";
+      document.getElementById("date").textContent = data.date || "Unknown";
+      document.getElementById("summary").textContent = data.summary;
+      document.getElementById("score").textContent = data.credibility_score;
+      document.getElementById("explanation").textContent = data.explanation;
+    });
+  </script>
+
+</body>
+</html>
