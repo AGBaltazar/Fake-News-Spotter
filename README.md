@@ -39,3 +39,6 @@ DOM Updates
 # References
     **FastAIP** [text](https://fastapi.tiangolo.com/)
     **Article Sraper/ Newspaper3K** [text](https://newspaper.readthedocs.io/en/latest/)
+    **Models**
+      **Fake News Detection** [text](https://huggingface.co/Pulk17/Fake-News-Detection)
+      **Summarizer** [text](https://huggingface.co/facebook/bart-large-cnn?library=transformers)

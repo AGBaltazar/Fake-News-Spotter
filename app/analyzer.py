@@ -1,10 +1,32 @@
 from newspaper import Article
+from transformers import pipeline
 
-def analyze(url):
-    article_author, article_date, article_text, article_title, article_summary = scrape(url)
+##This function will summarize the given text utilizng a AI model 
+def summarize(url):
+    article_text, article_title= scrape(url)
 
+    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
-    
+    ARTICLE = summarizer(article_text)
+
+    summary_text = ARTICLE[0]['summary_text']
+
+    print("Title:", article_title)
+    print("Summary:", summary_text)
+
+    return summary_text
+
+def biasAnalysis(url):
+    article_text= scrape(url)
+
+    pipe = pipeline("text-classification", model="d4data/bias-detection-model")
+
+    analysis = pipe(article_text)
+
+    return analysis
+
+## def fakeAnalisys(url):
+
 
 def scrape(url: str):
     article = Article(url)
@@ -19,7 +41,7 @@ def scrape(url: str):
     date = article.publish_date
     text = article.text
     title = article.title
-    summary = article.summary
 
-    return author, date, text, title, summary
+    return author, date, text, title
 
+## def sendToDom():
