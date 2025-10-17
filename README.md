@@ -40,5 +40,6 @@ DOM Updates
     **FastAIP** [text](https://fastapi.tiangolo.com/)
     **Article Sraper/ Newspaper3K** [text](https://newspaper.readthedocs.io/en/latest/)
     **Models**
-      **Fake News Detection** [text](https://huggingface.co/Pulk17/Fake-News-Detection)
+      **Fake News Detection** [text]https://huggingface.co/jy46604790/Fake-News-Bert-Detect
       **Summarizer** [text](https://huggingface.co/facebook/bart-large-cnn?library=transformers)
+      **Bias Analysis** [text](https://huggingface.co/cirimus/modernbert-large-bias-type-classifier)

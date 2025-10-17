@@ -14,18 +14,33 @@ def summarize(url):
     print("Title:", article_title)
     print("Summary:", summary_text)
 
-    return summary_text
+    return summary_text, article_title
 
 def biasAnalysis(url):
-    article_text= scrape(url)
+    article_text, article_title= scrape(url)
 
-    pipe = pipeline("text-classification", model="d4data/bias-detection-model")
+    pipe = pipeline("text-classification", model="cirimus/modernbert-large-bias-type-classifier")
 
     analysis = pipe(article_text)
 
-    return analysis
+    return analysis[0]['label'], analysis[0]['score']
 
-## def fakeAnalisys(url):
+def fakeAnalysis(url):
+    isFake = False
+
+    article_text, article_title= scrape(url)
+
+    pipe = pipeline("text-classification", model="jy46604790/Fake-News-Bert-Detect")
+
+    result = pipe(article_text)
+
+    if result[0]['label'] == 'LABEL_0':
+        isFake = True
+    else:
+        isFake = False
+
+    return isFake
+
 
 
 def scrape(url: str):
@@ -37,11 +52,9 @@ def scrape(url: str):
 
     article.nlp()
 
-    author = article.authors
-    date = article.publish_date
     text = article.text
     title = article.title
 
-    return author, date, text, title
+    return text, title
 
 ## def sendToDom():
