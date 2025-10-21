@@ -9,3 +9,4 @@ requests==2.32.0  # Newspaper3k dependency
 nltk==3.9.1
 spacy==3.7.5
 tqdm==4.66.5
+lxml[html_clean]
