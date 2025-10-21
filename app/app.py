@@ -1,7 +1,7 @@
 from typing import Optional
 from pydantic import BaseModel
 from fastapi import FastAPI
-from analyzer import fakeAnalysis, biasAnalysis, summarize 
+from app.analyzer import fakeAnalysis, biasAnalysis, summarize 
 
 app = FastAPI()
 

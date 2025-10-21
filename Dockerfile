@@ -13,8 +13,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy all project files
 COPY . .
 
+ENV PYTHONPATH=/app
+
 # Expose port for FastAPI
-EXPOSE 8000
+EXPOSE 8080
 
 # Run FastAPI app with uvicorn
 CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "8080"]

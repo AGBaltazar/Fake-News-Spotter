@@ -6,3 +6,6 @@ transformers==4.34.0
 torch==2.2.0      # Or tensorflow if you prefer
 python-multipart==0.0.6   # For form handling, optional
 requests==2.32.0  # Newspaper3k dependency
+nltk==3.9.1
+spacy==3.7.5
+tqdm==4.66.5
