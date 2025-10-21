@@ -47,17 +47,15 @@
       const response = await fetch("/app/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, text })
+        body: JSON.stringify({ url})
       });
 
       const data = await response.json();
 
-      document.getElementById("results").style.display = "block";
-      document.getElementById("title").textContent = data.title || "N/A";
-      document.getElementById("authors").textContent = data.authors || "Unknown";
-      document.getElementById("date").textContent = data.date || "Unknown";
+      document.getElementById("summary").textContent = data.summary;
       document.getElementById("score").textContent = data.credibility_score;
-      document.getElementById("explanation").textContent = data.explanation;
+      document.getElementById("explanation").textContent = data.fake_score;
+      document.getElementById("bias").textContent = data.bias_label; 
     });
   </script>
 

@@ -1,0 +1,8 @@
+fastapi==0.116.0
+uvicorn[standard]==0.23.2
+pydantic==2.6.0
+newspaper3k==0.2.8
+transformers==4.34.0
+torch==2.2.0      # Or tensorflow if you prefer
+python-multipart==0.0.6   # For form handling, optional
+requests==2.32.0  # Newspaper3k dependency
