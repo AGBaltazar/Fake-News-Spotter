@@ -41,8 +41,6 @@ def fakeAnalysis(url):
 
     return isFake
 
-
-
 def scrape(url: str):
     article = Article(url)
 
@@ -56,5 +54,3 @@ def scrape(url: str):
     title = article.title
 
     return text, title
-
-## def sendToDom():
