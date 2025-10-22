@@ -10,6 +10,9 @@ COPY requirements.txt .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Ensure NLTK data for newspaper3k NLP
+RUN python -m nltk.downloader punkt punkt_tab
+
 # Copy all project files
 COPY . .
 
