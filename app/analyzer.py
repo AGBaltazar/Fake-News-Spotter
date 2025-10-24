@@ -3,7 +3,7 @@ from transformers import pipeline
 
 ##This function will summarize the given text utilizng a AI model 
 def summarize(url):
-    article_text, article_title= scrape(url)
+    article_text, article_title, authors, date = scrape(url)
     
     summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 
@@ -17,7 +17,7 @@ def summarize(url):
     return summary_text, article_title
 
 def biasAnalysis(url):
-    article_text, article_title= scrape(url)
+    article_text, article_title, authors, date = scrape(url)
    
     bias_pipe = pipeline("text-classification", model="cirimus/modernbert-large-bias-type-classifier")
 
@@ -30,8 +30,10 @@ def biasAnalysis(url):
 def fakeAnalysis(url):
     isFake = False
 
-    article_text, article_title= scrape(url)
+    article_text, article_title, authors, date = scrape(url)
+
     fake_pipe = pipeline("text-classification", model="jy46604790/Fake-News-Bert-Detect")
+    
     truncated_text = " ".join(article_text.split()[:512])
 
     result = fake_pipe(truncated_text)
@@ -54,5 +56,7 @@ def scrape(url: str):
 
     text = article.text
     title = article.title
+    authors = ", ".join(article.authors)
+    date = article.publish_date.isoformat() if article.publish_date else "Unknown"
 
-    return text, title
+    return text, title, authors, date

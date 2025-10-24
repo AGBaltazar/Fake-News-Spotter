@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import os
-from app.analyzer import fakeAnalysis, biasAnalysis, summarize 
+from app.analyzer import fakeAnalysis, biasAnalysis, summarize, scrape
 
 app = FastAPI()
 
@@ -24,6 +24,9 @@ class Url(BaseModel):
     url: str
 
 class Output(BaseModel):
+    title: str
+    authors: str
+    date: str
     summary: str
     credibility_score: int
     fake_score: str
@@ -34,6 +37,7 @@ class Output(BaseModel):
 def get_item(url: Url):
     parsed_url = url.url
     try:
+        text, title, authors, date = scrape(parsed_url)
         fake_score = fakeAnalysis(parsed_url)
         bias_label, bias_score = biasAnalysis(parsed_url)
         summary = summarize(parsed_url)[0]
@@ -41,4 +45,12 @@ def get_item(url: Url):
         return {"summary": "", "credibility_score": 0, "fake_score": f"Error: {str(e)}", "bias_label": "Error"}
 
     to_string = "Possibly Fake News Article" if fake_score else "Article appears to be Real!"
-    return {"summary": summary, "credibility_score": bias_score, "fake_score": to_string, "bias_label": bias_label}
+    return {
+            "title": title,
+            "authors": authors,
+            "date": date,
+            "summary": summary,
+            "credibility_score": round(bias_score * 100),
+            "fake_score": fake_score,
+            "bias_label": bias_label
+        }
