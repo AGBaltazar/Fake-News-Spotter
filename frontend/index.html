@@ -30,7 +30,7 @@
       <p><strong>Authors:</strong> <span id="authors"></span></p>
       <p><strong>Date:</strong> <span id="date"></span></p>
       <p><strong>Summary:</strong> <span id="summary"></span></p>
-      <p><strong>Credibility Score:</strong> <span id="score"></span></p>
+      <p><strong>Bias Score:</strong> <span id="bias"></span></p>
       <p><strong>Explanation:</strong> <span id="explanation"></span></p>
     </div>
   </div>
@@ -53,9 +53,11 @@
       const data = await response.json();
 
       document.getElementById("summary").textContent = data.summary;
-      document.getElementById("score").textContent = data.credibility_score;
+      //document.getElementById("score").textContent = data.credibility_score;
       document.getElementById("explanation").textContent = data.fake_score;
       document.getElementById("bias").textContent = data.bias_label; 
+
+      console.log(data.summary, data.fake_score, data.bias_label)
     });
   </script>
 
