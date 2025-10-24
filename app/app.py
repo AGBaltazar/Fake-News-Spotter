@@ -51,6 +51,6 @@ def get_item(url: Url):
             "date": date,
             "summary": summary,
             "credibility_score": round(bias_score * 100),
-            "fake_score": fake_score,
-            "bias_label": to_string
+            "fake_score": to_string,
+            "bias_label": bias_label
         }
