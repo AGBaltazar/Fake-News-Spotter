@@ -49,6 +49,51 @@
     </div>
   </div>
 
-  <script src="/frontend/index.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("analyze-form");
+      const resultCard = document.getElementById("result-card");
+      const resultsDiv = document.getElementById("results");
+      const loadingDiv = document.getElementById("loading");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const url = document.getElementById("urlInput").value.trim();
+        if (!url) return alert("Please enter a valid article URL.");
+
+        resultCard.style.display = "block";
+        resultsDiv.style.display = "none";
+        loadingDiv.style.display = "block";
+
+        try {
+          const response = await fetch("/app/analyze", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url })
+          });
+
+          const data = await response.json();
+          console.log("Backend Response:", data);
+
+          loadingDiv.style.display = "none";
+          resultsDiv.style.display = "block";
+
+          document.getElementById("summary").textContent = data.summary || "N/A";
+          document.getElementById("bias_label").textContent = data.bias_label || "N/A";
+          document.getElementById("credibility_score").textContent = data.credibility_score ?? "N/A";
+          document.getElementById("fake_score").textContent = data.fake_score || "N/A";
+        } catch (err) {
+          console.error("Error:", err);
+          loadingDiv.style.display = "none";
+          resultsDiv.style.display = "block";
+          document.getElementById("summary").textContent = "Error: " + err.message;
+          document.getElementById("bias_label").textContent = "N/A";
+          document.getElementById("credibility_score").textContent = "N/A";
+          document.getElementById("fake_score").textContent = "N/A";
+        }
+      });
+    });
+  </script>
+
 </body>
 </html>
