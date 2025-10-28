@@ -1,5 +1,12 @@
 from newspaper import Article
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
+
+
+bias_tokenizer = AutoTokenizer.from_pretrained("cirimus/modernbert-large-bias-type-classifier")
+bias_model = AutoModelForSequenceClassification.from_pretrained("cirimus/modernbert-large-bias-type-classifier")
+
+fake_tokenizer = AutoTokenizer.from_pretrained("jy46604790/Fake-News-Bert-Detect")
+fake_model = AutoModelForSequenceClassification.from_pretrained("jy46604790/Fake-News-Bert-Detect")
 
 ##This function will summarize the given text utilizng a AI model 
 def summarize(url):
@@ -18,32 +25,15 @@ def summarize(url):
 
 def biasAnalysis(url):
     article_text, article_title, authors, date = scrape(url)
-   
-    bias_pipe = pipeline("text-classification", model="cirimus/modernbert-large-bias-type-classifier")
-
-    truncated_text = " ".join(article_text.split()[:512])
-
-    analysis = bias_pipe(truncated_text)
-
+    pipe = pipeline("text-classification", model=bias_model, tokenizer=bias_tokenizer)
+    analysis = pipe(article_text, truncation=True, padding=True, max_length=512)
     return analysis[0]['label'], analysis[0]['score']
 
 def fakeAnalysis(url):
-    isFake = False
-
     article_text, article_title, authors, date = scrape(url)
-
-    fake_pipe = pipeline("text-classification", model="jy46604790/Fake-News-Bert-Detect")
-    
-    truncated_text = " ".join(article_text.split()[:512])
-
-    result = fake_pipe(truncated_text)
-
-    if result[0]['label'] == 'LABEL_0':
-        isFake = True
-    else:
-        isFake = False
-
-    return isFake
+    pipe = pipeline("text-classification", model=fake_model, tokenizer=fake_tokenizer)
+    result = pipe(article_text, truncation=True, padding=True, max_length=512)
+    return result[0]['label'] == 'LABEL_0'
 
 def scrape(url: str):
     article = Article(url)

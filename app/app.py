@@ -24,33 +24,40 @@ class Url(BaseModel):
     url: str
 
 class Output(BaseModel):
-    title: str
-    authors: str
-    date: str
-    summary: str
-    credibility_score: int
-    fake_score: str
-    bias_label: str
+    title: Optional[str] = None
+    authors: Optional[list[str]] = None
+    date: Optional[str] = None
+    summary: Optional[str] = None
+    credibility_score: Optional[int] = None
+    fake_score: Optional[str] = None
+    bias_label: Optional[str] = None
 
 ## Once called, analyze will send the url to the backend scraper to analyze and retrieve information
 @app.post("/app/analyze", response_model=Output)
 def get_item(url: Url):
     parsed_url = url.url
     try:
-        text, title, authors, date = scrape(parsed_url)
-        fake_score = fakeAnalysis(parsed_url)
+        summary, title = summarize(parsed_url)
         bias_label, bias_score = biasAnalysis(parsed_url)
-        summary = summarize(parsed_url)[0]
+        is_fake = fakeAnalysis(parsed_url)
     except Exception as e:
-        return {"summary": "", "credibility_score": 0, "fake_score": f"Error: {str(e)}", "bias_label": "Error"}
-
-    to_string = "Possibly Fake News Article" if fake_score else "Article appears to be Real!"
-    return {
-            "title": title,
-            "authors": authors,
-            "date": date,
-            "summary": summary,
-            "credibility_score": round(bias_score * 100),
-            "fake_score": to_string,
-            "bias_label": bias_label
+        return {
+            "title": "",
+            "authors": [],
+            "date": "",
+            "summary": "",
+            "credibility_score": 0,
+            "fake_score": f"Error: {str(e)}",
+            "bias_label": "Error"
         }
+    fake_text = "Possibly Fake News Article" if is_fake else "Article appears to be Real!"
+
+    return {
+        "title": title,
+        "authors": [],
+        "date": "",
+        "summary": summary,
+        "credibility_score": round(bias_score * 100),
+        "fake_score": fake_text,
+        "bias_label": bias_label
+    }
