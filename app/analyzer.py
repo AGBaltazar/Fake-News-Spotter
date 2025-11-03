@@ -1,5 +1,7 @@
-from newspaper import Article
+import requests
+from bs4 import BeautifulSoup
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
+soup = BeautifulSoup(html_doc, 'html.parser')
 
 
 bias_tokenizer = AutoTokenizer.from_pretrained("cirimus/modernbert-large-bias-type-classifier")
@@ -36,17 +38,29 @@ def fakeAnalysis(url):
     return result[0]['label'] == 'LABEL_0'
 
 def scrape(url: str):
-    article = Article(url)
+    try:
+        # Extract the title if available
+        title = soup.title.string.strip() if soup.title else "Unknown Title"
 
-    article.download()
+        # Find all paragraphs inside <article> first, fallback to all <p> tags
+        article_tag = soup.find("article")
+        if article_tag:
+            paragraphs = [p.get_text().strip() for p in article_tag.find_all("p")]
+        else:
+            paragraphs = [p.get_text().strip() for p in soup.find_all("p")]
 
-    article.parse()
+        # Join all text together
+        article_text = " ".join(paragraphs)
 
-    article.nlp()
+        # Optional metadata
+        authors = "Unknown"
+        date = "Unknown"
 
-    text = article.text
-    title = article.title
-    authors = ", ".join(article.authors)
-    date = article.publish_date.isoformat() if article.publish_date else "Unknown"
+        if not article_text:
+            article_text = "No article content found."
 
-    return text, title, authors, date
+        return article_text, title, authors, date
+
+    except Exception as e:
+        print(f"Scraping error for {url}: {e}")
+        return "", "Error", "Error", "Error"
