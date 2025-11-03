@@ -83,7 +83,6 @@
           document.getElementById("credibility_score").textContent = data.credibility_score ?? "N/A";
           document.getElementById("fake_score").textContent = data.fake_score || "N/A";
         } catch (err) {
-          console.error("Error:", err);
           loadingDiv.style.display = "none";
           resultsDiv.style.display = "block";
           document.getElementById("summary").textContent = "Error: " + err.message;
