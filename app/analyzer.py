@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
-soup = BeautifulSoup(html_doc, 'html.parser')
+
 
 
 bias_tokenizer = AutoTokenizer.from_pretrained("cirimus/modernbert-large-bias-type-classifier")
@@ -39,6 +39,11 @@ def fakeAnalysis(url):
 
 def scrape(url: str):
     try:
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        soup = BeautifulSoup(response.text, "html.parser")
         # Extract the title if available
         title = soup.title.string.strip() if soup.title else "Unknown Title"
 
