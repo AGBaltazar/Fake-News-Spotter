@@ -84,14 +84,14 @@
           document.getElementById("summary").textContent = data.summary || "N/A";
           document.getElementById("bias_label").textContent = data.bias_label || "N/A";
           document.getElementById("bias_score").textContent = data.bias_score ?? "N/A";
-          /**document.getElementById("fake_score").textContent = data.fake_score || "N/A";**/
+          document.getElementById("fake_score").textContent = data.fake_score || "N/A";
         } catch (err) {
           loadingDiv.style.display = "none";
           resultsDiv.style.display = "block";
           document.getElementById("summary").textContent = "Error: " + err.message;
           document.getElementById("bias_label").textContent = "N/A";
           document.getElementById("bias_score").textContent = "N/A";
-          /**document.getElementById("fake_score").textContent = "N/A";**/
+          document.getElementById("fake_score").textContent = "N/A";
         }
       });
     });

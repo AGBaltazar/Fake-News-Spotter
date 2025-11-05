@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 import os
-from app.analyzer import summarize, biasAnalysis
+from app.analyzer import summarize, biasAnalysis, fakeAnalysis
 
 
 app = FastAPI()
@@ -29,7 +29,7 @@ class Output(BaseModel):
     authors: Optional[list[str]] = None
     summary: Optional[str] = None
     bias_score: Optional[int] = None
-    #fake_score: Optional[str] = None
+    fake_score: Optional[str] = None
     bias_label: Optional[str] = None
 
 ## Once called, analyze will send the url to the backend scraper to analyze and retrieve information
@@ -41,14 +41,14 @@ def get_item(url: Url):
         title, authors, summary = summarize(parsed_url)
         print(f"Received from Analyzer: {title, authors, summary}")
         bias_label, bias_score = biasAnalysis(parsed_url)
-        #is_fake = fakeAnalysis(parsed_url)
-        #fake_text = "Possibly Fake News Article" if is_fake else "Article appears to be Real!"
+        is_fake = fakeAnalysis(parsed_url)
+        fake_text = "Possibly Fake News Article" if is_fake else "Article appears to be Real!"
  
         return {
             "title": title,
             "authors": authors,
             "summary": summary,
-            ##"fake_score": fake_text,
+            "fake_score": fake_text,
             "bias_label": bias_label,
             "bias_score": bias_score
         }
