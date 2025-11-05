@@ -36,9 +36,10 @@
         </div>
         <div id="results" style="display:none;">
           <p><strong> Title:</strong> <span id="title"></span></p>
+          <p><strong> Authors:</strong> <span id="authors"></span></p>
           <p><strong> Summary:</strong> <span id="summary"></span></p>
           <p><strong> Bias Label:</strong> <span id="bias_label"></span></p>
-          <p><strong> Credibility Score:</strong> <span id="credibility_score"></span>%</p>
+          <p><strong> Bias Score:</strong> <span id="bias_score"></span>%</p>
           <p><strong> Fake News Check:</strong> <span id="fake_score"></span></p>
           <p class="text-muted small mt-3">
           <em>Note:</em> The credibility score reflects how trustworthy the source appears based on bias and content patterns.  
@@ -75,20 +76,22 @@
           const data = await response.json();
           console.log("Backend Response:", data);
 
-          loadingDiv.style.display = "none";
+          loadingDiv.style.display = "none"; 
           resultsDiv.style.display = "block";
 
+          document.getElementById("title").textContent = data.title || "N/A";
+          document.getElementById("authors").textContent = data.authors || "N/A";
           document.getElementById("summary").textContent = data.summary || "N/A";
           document.getElementById("bias_label").textContent = data.bias_label || "N/A";
-          document.getElementById("credibility_score").textContent = data.credibility_score ?? "N/A";
-          document.getElementById("fake_score").textContent = data.fake_score || "N/A";
+          document.getElementById("bias_score").textContent = data.bias_score ?? "N/A";
+          /**document.getElementById("fake_score").textContent = data.fake_score || "N/A";**/
         } catch (err) {
           loadingDiv.style.display = "none";
           resultsDiv.style.display = "block";
           document.getElementById("summary").textContent = "Error: " + err.message;
           document.getElementById("bias_label").textContent = "N/A";
-          document.getElementById("credibility_score").textContent = "N/A";
-          document.getElementById("fake_score").textContent = "N/A";
+          document.getElementById("bias_score").textContent = "N/A";
+          /**document.getElementById("fake_score").textContent = "N/A";**/
         }
       });
     });
