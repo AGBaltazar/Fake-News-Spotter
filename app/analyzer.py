@@ -20,8 +20,8 @@ def biasAnalysis(url):
 
 def fakeAnalysis(url):
     article_title, authors, summary= scrape(url)
-    tokenizer = AutoTokenizer.from_pretrained("mrm8488/bert-tiny-finetuned-fake-news-detection")
-    model = AutoModelForSequenceClassification.from_pretrained("mrm8488/bert-tiny-finetuned-fake-news-detection")
+    tokenizer = AutoTokenizer.from_pretrained("jy46604790/Fake-News-Bert-Detect")
+    model = AutoModelForSequenceClassification.from_pretrained("jy46604790/Fake-News-Bert-Detect")
     classifier= pipeline(summary, model=model, tokenizer=tokenizer)
     result = classifier(summary)
     return result[0]['label'] == 'LABEL_0'
