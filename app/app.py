@@ -41,8 +41,10 @@ def get_item(url: Url):
         title, authors, summary = summarize(parsed_url)
         print(f"Received from Analyzer: {title, authors, summary}")
         bias_label, bias_score = biasAnalysis(parsed_url)
-        is_fake = fakeAnalysis(parsed_url)
-        fake_text = "Possibly Fake News Article" if is_fake else "Article appears to be Real!"
+        fake_label, fake_score = fakeAnalysis(parsed_url)
+
+        label_map = {"LABEL_0": "Fake News", "LABEL_1": "Real News"}
+        fake_text = f"{label_map.get(fake_label, fake_label)} ({fake_score:.2f})"
  
         return {
             "title": title,
