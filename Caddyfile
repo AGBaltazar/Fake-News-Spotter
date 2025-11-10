@@ -4,12 +4,12 @@ fakenewsai.info, www.fakenewsai.info {
     reverse_proxy localhost:8000
 
     handle_path /static/* {
-        root * /app/frontend
+        root * /home/alejandro/github/agbaltazar/Fake-News-Spotter/frontend
         file_server
     }
 
     handle {
-        root * /app/frontend
+        root * /home/alejandro/github/agbaltazar/Fake-News-Spotter/frontend
         file_server
         try_files {path} /index.html
     }
