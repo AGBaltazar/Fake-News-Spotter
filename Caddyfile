@@ -1,18 +1,16 @@
 fakenewsai.info, www.fakenewsai.info {
     encode gzip
 
-    reverse_proxy localhost:8000
+    # Serve frontend files, fallback to index.html
+    root * /home/alejandro/github/agbaltazar/Fake-News-Spotter/frontend
+    file_server
+    try_files {path} /index.html
 
-    handle_path /static/* {
-        root * /home/alejandro/github/agbaltazar/Fake-News-Spotter/frontend
-        file_server
+    # Proxy all API requests to FastAPI
+    @api {
+        path /app/*
     }
-
-    handle {
-        root * /home/alejandro/github/agbaltazar/Fake-News-Spotter/frontend
-        file_server
-        try_files {path} /index.html
-    }
+    reverse_proxy @api localhost:8000
 
     log {
         output file /var/log/caddy/fakenewsai-access.log
