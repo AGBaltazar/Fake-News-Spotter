@@ -1,0 +1,20 @@
+fakenewsai.info, www.fakenewsai.info {
+    encode gzip
+
+    reverse_proxy localhost:8000
+
+    handle_path /static/* {
+        root * /app/frontend
+        file_server
+    }
+
+    handle {
+        root * /app/frontend
+        file_server
+        try_files {path} /index.html
+    }
+
+    log {
+        output file /var/log/caddy/fakenewsai-access.log
+    }
+}
