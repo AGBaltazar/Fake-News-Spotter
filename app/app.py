@@ -33,7 +33,7 @@ class Output(BaseModel):
     bias_label: Optional[str] = None
 
 ## Once called, analyze will send the url to the backend scraper to analyze and retrieve information
-@app.post("/app/analyze")
+@app.post("/analyze")
 def get_item(url: Url):
     parsed_url = url.url
     print(f"Received URL: {parsed_url}")
